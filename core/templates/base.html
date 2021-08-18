@@ -1,29 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %} {% endblock %} - TEMPLATES BLOCKS</title>
-    <!-- ZONA DE ESTILOS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    {% block  estilos %}
-    {% endblock %}
-</head>
-<body>
+    <title>{% block titulo %}{% endblock %} - Templates BASE</title>
     {% load static %}
+    <link rel="shortcut icon" href="% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
-    <div class="container">
-        {% block  contenido %}
-        {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/misestilos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tipped.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}" />
+
+    {% block estilos %}{% endblock %}
+
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/bootbox.min.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/toastr.min.js' %}"></script>
+    <script src="{% static 'js/tipped.min.js' %}"></script>       
+    <script src="{% static 'js/pdfmake.min.js' %}"></script>       
+    <script src="{% static 'js/vfs_fonts.js' %}"></script>       
+    <script src="{% static 'js/datatables.min.js' %}"></script>       
+
+    <script>
+        $(document).ready(function () {
+            bootbox.addLocale("pancho", {
+                OK : 'Aceptar',
+                CANCEL : 'Cancelar',
+                CONFIRM : 'Confirmar'
+            });
+
+            toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            }
+            // Uso de la herramienta: en la etiqueta agregar atributo 
+            // AYUDA y colocar clase "tooltip-tipped"
+            Tipped.create('.tooltip-tipped', function (element) {
+                    return {
+                        title: "Ayuda en Pantalla",
+                        content: $(element).attr('ayuda')
+                    };
+                }, {
+                    skin: 'light',
+                }
+            );
+
+            {% if messages %}
+                {% for message in messages %}
+                    toastr.{{ message.tags }}("{{message}}");
+                {% endfor %}
+            {% endif %}
+
+        });
+        </script>
+
+        {% block scripts %}{% endblock %}
+</head>
+
+<body>
+
     
+        {% block contenido %}{% endblock %}
 
-        {{ usuario }}
-   </div>
-    <!-- ZONA DE JAVASCRIPT -->
-    <script src="{% static 'js/index.js' %}"></script>
 
-    {% block  scri %}
-    {% endblock %}
 </body>
+
 </html>
